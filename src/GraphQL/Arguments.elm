@@ -1,9 +1,15 @@
-module GraphQL.Arguments exposing (Argument, string, union, toKeyValueStrings)
+module GraphQL.Arguments exposing (Argument, string, union, int, toKeyValueStrings)
 
 
 type Argument
     = StringArg String String
+    | IntArg String Int
     | UnionArg String String
+
+
+int : String -> Int -> Argument
+int =
+    IntArg
 
 
 string : String -> String -> Argument
@@ -21,6 +27,9 @@ toKeyValueString arg =
     case arg of
         StringArg name value ->
             name ++ ": \"" ++ value ++ "\""
+
+        IntArg name value ->
+            name ++ ": " ++ toString value
 
         UnionArg name value ->
             name ++ ": " ++ value

@@ -2,7 +2,10 @@ module GraphQL.Query
     exposing
         ( Query
         , field
+        , fieldWithArgs
+        , fieldList
         , object
+        , objectWithArgs
         , alias
         , toQueryString
         , toNamedQueryString
@@ -17,13 +20,28 @@ type Query
     | Alias String Query
 
 
-field : String -> List Argument -> Query
-field name args =
+fieldList : List String -> List Query
+fieldList =
+    List.map field
+
+
+field : String -> Query
+field name =
+    fieldWithArgs name []
+
+
+fieldWithArgs : String -> List Argument -> Query
+fieldWithArgs name args =
     Leaf name args
 
 
-object : String -> List Argument -> List Query -> Query
-object name args fields =
+object : String -> List Query -> Query
+object name fields =
+    objectWithArgs name [] fields
+
+
+objectWithArgs : String -> List Argument -> List Query -> Query
+objectWithArgs name args fields =
     Node name args fields
 
 
